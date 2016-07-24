@@ -13,7 +13,8 @@ local keywords = token(l.KEYWORD, word_match{
 	"abstype", "and", "andalso", "as", "case", "datatype", "do", "else", "end",
 	"exception", "fn", "fun", "handle", "if", "in", "infix", "infixr", "let",
 	"local", "nonfix", "of", "op", "open", "orelse", "raise", "rec", "then",
-	"type", "val", "with", "withtype", "while"
+	"type", "val", "with", "withtype", "while", "eqtype", "functor", "include",
+	"sharing", "sig", "signature", "struct", "structure", "where", ":>"
 })
 
 local operators = token(l.OPERATOR, S('()[]{},:;._|=>-#'))
@@ -31,8 +32,8 @@ local singleLineComment = P('(*)') * l.nonnewline_esc^0
 local blockComment = l.nested_pair('(*', '*)')
 local comment = token(l.COMMENT, singleLineComment + blockComment)
 
-local symbolicIdentifier = S('!%&$#+-/:<=>?@\\~‘^|*')
-
+local alphanumIdentifier = ('`' + l.alpha) * (S('`_') + l.alnum)^0
+local symbolicIdentifier = S('!%&$#+-/:<=>?@\\~`^|*')
 local identifier = token(l.IDENTIFIER, l.word + symbolicIdentifier)
 
 M._rules = {
